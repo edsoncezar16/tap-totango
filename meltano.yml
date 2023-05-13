@@ -1,0 +1,33 @@
+version: 1
+send_anonymous_usage_stats: true
+project_id: tap-totango
+default_environment: test
+environments:
+- name: test
+plugins:
+  extractors:
+  - name: tap-totango
+    namespace: tap_totango
+    pip_url: -e .
+    executable: tap-totango
+    capabilities:
+    - catalog
+    - discover
+    - state
+    - about
+    - stream-maps
+    settings:
+    - name: api_url
+    - name: auth_token
+      kind: password
+    - name: terms
+      kind: array
+    - name: count
+      kind: integer
+    - name: offset
+      kind: integer
+    - name: account_id
+  loaders:
+  - name: target-jsonl
+    variant: andyh1203
+    pip_url: target-jsonl

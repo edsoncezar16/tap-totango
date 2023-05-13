@@ -39,7 +39,7 @@ environment variable is set either in the terminal context or in the `.env` file
 
 You should create a [Totango API personal access token](https://support.totango.com/hc/en-us/articles/203036939-Personal-Access-Token-and-Service-ID) and provide it as the `auth_token` setting for the tap.
 
-We recommend passing it as an environment variable. For instance, when using the tap with Meltano you should add the following line to you `.env` file:
+We recommend passing it as an environment variable. For instance, when using the tap with Meltano you should add the following line to your `.env` file:
 
 ``` bash
 export TAP_TOTANGO_AUTH_TOKEN=< YOUR_PERSONAL_ACCESS_TOKEN >
@@ -87,12 +87,6 @@ poetry run tap-totango --help
 
 _**Note:** This tap will work in any Singer environment and does not require Meltano.
 Examples here are for convenience and to streamline end-to-end orchestration scenarios._
-
-<!--
-Developer TODO:
-Your project comes with a custom `meltano.yml` project file already created. Open the `meltano.yml` and follow any "TODO" items listed in
-the file.
--->
 
 Next, install Meltano (if you haven't already) and any needed plugins:
 

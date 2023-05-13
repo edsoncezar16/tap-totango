@@ -20,13 +20,23 @@ plugins:
     - name: api_url
     - name: auth_token
       kind: password
-    - name: terms
+    - name: events_terms
       kind: array
-    - name: count
+    - name: events_count
       kind: integer
-    - name: offset
+    - name: events_offset
       kind: integer
     - name: account_id
+    - name: accounts_terms
+      kind: array
+    - name: accounts_fields
+      kind: array
+    - name: accounts_count
+      kind: integer
+    - name: accounts_offset
+      kind: integer
+    - name: accounts_sort_by
+    - name: accounts_sort_order
   loaders:
   - name: target-jsonl
     variant: andyh1203

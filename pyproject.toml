@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tap-totango"
-version = "0.1.0"
+version = "0.2.0"
 description = "`tap-totango` is a Singer tap for totango, built with the Meltano Singer SDK."
 readme = "README.md"
 authors = ["Edson Nogueira"]

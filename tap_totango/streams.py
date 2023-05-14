@@ -72,7 +72,7 @@ class AccountsStream(totangoStream):
     path = "/api/v1/search/accounts"
 
     records_jsonpath = "$.response.accounts.hits[*]"
-    primary_keys = ["id"]
+    primary_keys = ["name"]
     replication_key = None
     # Optionally, you may also use `schema_filepath` in place of `schema`:
     schema_filepath = SCHEMAS_DIR / "accounts.json"  # noqa: ERA001
@@ -102,6 +102,50 @@ class AccountsStream(totangoStream):
             "count": params["accounts_count"],
             "sort_by": params["accounts_sort_by"],
             "sort_order": params["accounts_sort_order"],
+        }
+        data = {"query": json.dumps(query)}
+        return data
+
+
+class UsersStream(totangoStream):
+    """Define custom stream."""
+
+    name = "users"
+    rest_method = "POST"
+
+    path = "/api/v1/search/users"
+
+    records_jsonpath = "$.response.users.hits[*]"
+    primary_keys = ["name"]
+    replication_key = None
+    # Optionally, you may also use `schema_filepath` in place of `schema`:
+    schema_filepath = SCHEMAS_DIR / "users.json"  # noqa: ERA001
+
+    def prepare_request_payload(
+        self,
+        context: dict | None,  # noqa: ARG002
+        next_page_token: t.Any | None,  # noqa: ARG002
+    ) -> dict | None:
+        """Prepare the data payload for the REST API request.
+
+        By default, no payload will be sent (return None).
+
+        Args:
+            context: The stream context.
+            next_page_token: The next page index or value.
+
+        Returns:
+            A dictionary with the JSON body for a POST requests.
+        """
+        # TODO: Delete this method if no payload is required. (Most REST APIs.)
+        params = self.config
+        query = {
+            "terms": params["users_terms"],
+            "fields": params["users_fields"],
+            "offset": params["users_offset"],
+            "count": params["users_count"],
+            "sort_by": params["users_sort_by"],
+            "sort_order": params["users_sort_order"],
         }
         data = {"query": json.dumps(query)}
         return data

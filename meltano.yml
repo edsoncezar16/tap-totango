@@ -37,6 +37,16 @@ plugins:
       kind: integer
     - name: accounts_sort_by
     - name: accounts_sort_order
+    - name: users_terms
+      kind: array
+    - name: users_fields
+      kind: array
+    - name: users_count
+      kind: integer
+    - name: users_offset
+      kind: integer
+    - name: users_sort_by
+    - name: users_sort_order
   loaders:
   - name: target-jsonl
     variant: andyh1203

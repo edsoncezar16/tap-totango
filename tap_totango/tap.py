@@ -60,7 +60,7 @@ class Taptotango(Tap):
         th.Property(
             "account_id",
             th.StringType,
-            description="Filter the results for a specific account.",
+            description="Filter the events stream results for a specific account.",
         ),
         th.Property(
             "accounts_terms",
@@ -110,6 +110,54 @@ class Taptotango(Tap):
             default="ASC",
             description="Order to sort the accounts stream results set by.",
         ),
+        th.Property(
+            "users_terms",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("type", th.StringType, required=True),
+                    additional_properties=True,
+                )
+            ),
+            required=True,
+            default=[],
+            description="An array containing filter conditions to use for the users stream search.",
+        ),
+        th.Property(
+            "users_fields",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property("type", th.StringType, required=True),
+                    additional_properties=True,
+                )
+            ),
+            required=True,
+            default=[],
+            description="List of fields to return as results. Note that the account name and account-id are always returned as well.",
+        ),
+        th.Property(
+            "users_count",
+            th.IntegerType,
+            default=1000,
+            description="The maximum number of users to return in the events result set. The max. value for count is 1000.",
+        ),
+        th.Property(
+            "users_offset",
+            th.IntegerType,
+            default=0,
+            description='Record number (0 states "start at record 0"). The record size can be defined using the count parameter (and limited to 1000). Tip: To page through results, ask for 1000 records (count: 1000). If you receive 1000 records, assume there’s more, in which case you want to pull the next 1000 records (offset: 1000…then 2000…etc.). Repeat paging until the number of records returned is less than 1000.',
+        ),
+        th.Property(
+            "users_sort_by",
+            th.StringType,
+            default="display_name",
+            description="Field name to sort the users stream results set by.",
+        ),
+        th.Property(
+            "users_sort_order",
+            th.StringType(allowed_values=["ASC", "DESC"]),
+            default="ASC",
+            description="Order to sort the users stream results set by.",
+        ),
     ).to_dict()
 
     def discover_streams(self) -> list[streams.totangoStream]:
@@ -118,7 +166,11 @@ class Taptotango(Tap):
         Returns:
             A list of discovered streams.
         """
-        return [streams.EventsStream(self), streams.AccountsStream(self)]
+        return [
+            streams.EventsStream(self),
+            streams.AccountsStream(self),
+            streams.UsersStream(self),
+        ]
 
 
 if __name__ == "__main__":

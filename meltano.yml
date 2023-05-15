@@ -77,7 +77,7 @@ plugins:
         The max. value for count is 1000.
       documentation: https://support.totango.com/hc/en-us/articles/204174135-Search-API-accounts-and-users-
       kind: integer
-      value: 1000
+      value: 100
     - name: accounts_offset
       description: |
         Record number (0 states "start at record 0"). 

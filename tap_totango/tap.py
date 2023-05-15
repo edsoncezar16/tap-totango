@@ -156,7 +156,7 @@ class Taptotango(Tap):
         th.Property(
             "accounts_count",
             th.IntegerType,
-            default=1000,
+            default=100,
             description="The maximum number of accounts to return in the accounts result set. The max. value for count is 1000.",
         ),
         th.Property(

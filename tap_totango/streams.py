@@ -127,8 +127,20 @@ class EventsStream(totangoStream):
     # Optionally, you may also use `schema_filepath` in place of `schema`:
     schema_filepath = SCHEMAS_DIR / "events.json"  # noqa: ERA001
 
-    parent_stream_type = AccountsStream
-    ignore_parent_replication_key = True
+    @property
+    def is_child(self) -> bool:
+        """Verifies if the stream is to be fetched independently or as a child from the Accounts stream.
+
+        Args:
+            None
+
+        Returns:
+            A boolean indicating the child status.
+        """
+        return not self.config.get("account_id")
+
+    if is_child:
+        parent_stream_type = AccountsStream
 
     def prepare_request_payload(
         self,
@@ -155,5 +167,10 @@ class EventsStream(totangoStream):
             "count": params["events_count"],
         }
         data = {"query": json.dumps(query)}
-        data["account_id"] = "{account_id}"
+        if params.get("account_id"):
+            data["account_id"] = params["account_id"]
+        elif context:
+            data["account_id"] = "{account_id}"
+        else:
+            pass
         return data

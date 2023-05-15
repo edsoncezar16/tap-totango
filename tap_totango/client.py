@@ -9,6 +9,8 @@ import requests
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.pagination import BaseAPIPaginator  # noqa: TCH002
 from singer_sdk.streams import RESTStream
+from singer_sdk.authenticators import APIKeyAuthenticator
+
 import json
 
 _Auth = Callable[[requests.PreparedRequest], requests.PreparedRequest]
@@ -28,20 +30,6 @@ class totangoStream(RESTStream):
 
     # Set this value or override `get_new_paginator`.
     next_page_token_jsonpath = "$.next_page"  # noqa: S105
-
-    @property
-    def http_headers(self) -> dict:
-        """Return the http headers needed.
-
-        Returns:
-            A dictionary of HTTP headers.
-        """
-        headers = {}
-        if "user_agent" in self.config:
-            headers["User-Agent"] = self.config.get("user_agent")
-        # If not using an authenticator, you may also provide inline auth headers:
-        headers["app-token"] = self.config.get("auth_token")  # noqa: ERA001
-        return headers
 
     def get_new_paginator(self) -> BaseAPIPaginator:
         """Create a new pagination helper instance.
@@ -137,3 +125,17 @@ class totangoStream(RESTStream):
         """
         # TODO: Delete this method if not needed.
         return row
+
+    @property
+    def authenticator(self) -> APIKeyAuthenticator:
+        """Return a new authenticator object.
+
+        Returns:
+            An authenticator instance.
+        """
+        return APIKeyAuthenticator.create_for_stream(
+            self,
+            key="app-token",
+            value=self.config.get("auth_token", ""),
+            location="header",
+        )
